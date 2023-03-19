@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+  <h1 class="text-center display-1 py-5 text-uppercase">Customers</h1>
+  <div class="d-flex justify-content-end bg-white rounded-pill p-3">
+    <a href="{% url 'accounts:customer-create' %}" class="btn text-primary fs-5">Register customer<i class="fas fa-angle-right ms-3"></i></a>
+  </div>
+    <div class="p-3 bg-white rounded-5 mt-5">
+      <table class="table table-striped bg-white rounded-4">
+        <thead class="bg-primary text-white">
+                <th scope="col">Name</th>
+                <th scope="col">Group</th>
+                <th scope="col">Email</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Card Number</th>
+        </thead>
+        <tbody>
+            {% for customer in customers %}
+            <tr class="lead border-white border-bottom-0">
+                <td>{{ customer.name }}</td>
+                <td>{{ customer.group.name }}</td>
+                <td>{{ customer.email }}</td>
+                <td>
+                  {% if customer.phone %}
+                  {{ customer.phone }}
+                  {% endif %}
+                </td>
+                <td>#{{ customer.card_number }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+
+{% endblock content %}

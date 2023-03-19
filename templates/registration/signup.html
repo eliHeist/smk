@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+<div class="container">
+    <h1 class="display-1 text-center py-5 text-uppercase">Signup</h1>
+</div>
+{% if request.user.is_staff %}
+<div class="form-width">
+    <form method="post" class="form-control bg-white my-5 p-5 border-0 text-dark">
+        {% csrf_token %}
+        {{ form|crispy   }}
+        <input type="submit" value="Signup" class="btn btn-secondary">
+    </form>
+</div>
+{% else %}
+<div class="container">
+    <div class="text-center my-3">
+        You must be logged in to sign in new user
+    </div>
+    <a href="{% url 'accounts:login' %}" class="btn btn-secondary">Login</a>
+</div>
+{% endif %}
+{% endblock content %}
+
+
+{% block styles %}
+    
+    {% if request.user.is_manager and not request.user.is_superuser %}
+        <style>
+            #div_id_is_manager{
+                display: none;
+            }
+            #div_id_is_cashier{
+                display: none;
+            }
+        </style>
+    {% endif %}
+        
+{% endblock styles %}
+    

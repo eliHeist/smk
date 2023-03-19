@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+    <h1 class="display-1 text-center py-5">Register new customer</h1>
+    <div class="d-flex justify-content-start bg-white rounded-pill p-3">
+        <a href="{% url 'accounts:customer-list' %}" class="btn text-primary"><i class="fas fa-angle-left me-3"></i>Back</a>
+      </div>
+    {% if request.user.is_cashier or request.user.is_manager %}
+    <div class="form-width">
+        <form method="post" class="form-control bg-white my-5 p-5 border-0 text-altdark">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <input type="submit" value="Register" class="btn btn-secondary">
+        </form>
+    </div>
+    {% endif %}
+{% endblock content %}

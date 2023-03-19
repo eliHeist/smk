@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section id="site">
+    <section class="actions">
+        <div class="d-flex rounded-5 p-4 bg-white">
+            <input type="search" id="searchbar" name="search" placeholder="Search for item" class="w-100 form-control">
+        </div>
+    </section>
+    <section class="invoice">
+        {% include 'main/components/invoice.html' %}
+    </section>
+    <section class="items">
+        {% include 'main/components/items.html' %}
+    </section>
+</section>
+{% endblock content %}
+
+
+{% block styles %}
+<style>
+    #site {
+        display: grid;
+        gap: 1em;
+        height: 100%;
+        grid-template-columns: 2fr 1fr;
+        grid-template-rows: auto 1fr;
+        grid-template-areas:
+            "actions cart"
+            "items cart"
+        ;
+    }
+
+    .actions {
+        grid-area: actions;
+        place-content: center;
+    }
+
+    .invoice {
+        grid-area: cart;
+        height: 100%;
+        display: grid;
+        gap: 1em;
+        grid-template-rows: auto 1fr;
+    }
+
+    .invoice .items {
+        overflow-y: auto;
+    }
+
+    .items {
+        grid-area: items;
+    }
+</style>
+{% endblock styles %}
+
+
+{% block scripts %}
+<script>
+    var user = '{{ request.user }}'
+
+    async function getToken(name) {
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';')
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim()
+                // does it begin with the name we want
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1))
+                    break
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    //var csrftoken = getToken('csrftoken')
+</script>
+<script src="{% static 'js/search.js' %}"></script>
+<script src="{% static 'js/invoice.js' %}"></script>
+{% endblock scripts %}

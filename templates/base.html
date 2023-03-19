@@ -1,0 +1,125 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.min.css' %}">
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
+    <title>SMK</title>
+    <style>
+        #base-site{
+            display: grid;
+            grid-template-columns: 1.2fr 5fr;
+            grid-template-rows: auto 1fr;
+            grid-template-areas: 
+                "title header"
+                "footer main"
+            ;
+            height: 100vh;
+            overflow: hidden;
+        }
+        #base-site header{
+            grid-area: header;
+        }
+        #base-site #dynamic-main{
+            grid-area: main;
+            overflow-y: auto;
+        }
+        #base-site footer{
+            grid-area: footer;
+            height: 100%;
+        }
+        #base-site .site-brand{
+            grid-area: title;
+            filter: contrast(1.2);
+        }
+        footer{
+            grid-template-rows: auto 1fr auto;
+        }
+        li.alert.hide{
+            transform: scale(.01);
+        }
+        li.alert{
+            transform: scale(1);
+            transition: transform .3s ease-in-out;
+        }
+    </style>
+    {% block styles %}
+    {% endblock styles %}
+</head>
+<body class="bg-light">
+    <section id="base-site">
+        <div class="bg-primary site-brand">
+            <h1 class="text-uppercase text-white text-center">smk</h1>
+        </div>
+        {% include 'components/header.html' %}
+        <section id="dynamic-main" class="p-3">
+            {% block content %}
+            {% endblock content %}
+        </section>
+        {% include 'components/footer.html' %}
+    </section>
+    
+    {% block modals %}
+    {% endblock modals %}
+    
+    
+    {% block scripts %}
+    {% endblock scripts %}
+    {% if request.user.is_authenticated %}
+    <script src="{% static 'js/currency.js' %}"></script>
+    <script src="{% static 'js/howler.min.js' %}"></script>
+    <script src="{% static 'js/UI.js' %}"></script>
+    <script src="{% static 'js/notifications.js' %}"></script>
+    {% endif %}
+        
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <style>
+        header #notification-icon.animate{
+            animation: ring 1s infinite;
+            transform: rotateZ(50deg);
+        }
+        @keyframes ring {
+            /*0% {
+                transform: rotateZ(0deg);
+            }
+            12% {
+                transform: rotateZ(-20deg);
+            }
+            25% {
+                transform: rotateZ(50deg);
+            }
+            47% {
+                transform: rotateZ(-50deg);
+            }
+            50% {
+                transform: rotateZ(20deg);
+            }
+            62% {
+                transform: rotateZ(-20deg);
+            }
+            75% {
+                transform: rotateZ(50deg);
+            }
+            88% {
+                transform: rotateZ(-50deg);
+            }*/
+            0% {
+                transform: rotateZ(0deg);
+            }
+            25% {
+                transform: rotateZ(50deg);
+            }
+            75% {
+                transform: rotateZ(-50deg);
+            }
+            100% {
+                transform: rotateZ(0deg);
+            }
+        }
+      </style>
+</body>
+</html>

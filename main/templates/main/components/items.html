@@ -1,0 +1,33 @@
+
+<!-- <input type="text" readonly> -->
+
+<div class="p-4 bg-white border rounded-5">
+    <table class="table table-striped bg-white rounded-1 m-0 border-0" id="items">
+        <thead class="border-0 " style="border-style: none;">
+            <tr class="bg-white text-dark">
+                <th scope="col" class="border-0">Item id</th>
+                <th scope="col" class="border-0">Name</th>
+                <th scope="col" class="border-0">Brand</th>
+                <th scope="col" class="border-0">Price</th>
+                <th scope="col" class="border-0">Stock</th>
+                <th scope="col" class="border-0"></th>
+            </tr>
+        </thead>
+        <tbody style="border-style: none;">
+            {% for item in items %}
+            <tr class="item border-0 border-light lead" role="item">
+                <td>{{ item.pk }}</td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.brand.name }}</td>
+                <td>{{ item.price }}</td>
+                <td>{{ item.stock }}</td>
+                <td>
+                    {% if item.stock > 0 %}
+                    <a href="#" class="link"><i data-item="{{ item.pk }}" data-name="{{ item.name }}" data-price="{{ item.price }}" data-stock="{{ item.stock }}" data-brand="{{ item.brand.name }}" data-action="add" class="add-order fas fa-cart-plus"></i></a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

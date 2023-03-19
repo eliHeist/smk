@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <h1 class="display-1 py-5 text-center">Cashiers</h1>
+    <div class="d-flex bg-white justify-content-end p-3 rounded-pill">
+        <a href="{% url 'accounts:signup' %}" class="btn text-primary">Add new<i class="fas fa-angle-right ms-3"></i></a>
+    </div>
+    <div class="p-3 bg-white rounded-5 mt-5">
+        <table class="table table-striped bg-white rounded-4">
+            <thead class="bg-primary text-white">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cashier in cashiers %}
+                <tr class="border-white">
+                    <td scope="row" class="fw-bold">{{ cashier.pk }}</td>
+                    <td>{{ cashier.first_name }} {{ cashier.last_name }}</td>
+                    <td>@{{ cashier.username }}</td>
+                    <td>{{ cashier.email }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock content %}

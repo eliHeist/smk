@@ -1,0 +1,39 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"liveSassCompile.settings.formats": [
+			{
+				"format": "expanded",
+				"extensionName": ".css",
+				"savePath": "/static/css",
+				"savePathSegmentKeys": null,
+				"savePathReplaceSegmentsWith": null
+			},
+			{
+				"format": "compressed",
+				"extensionName": ".min.css",
+				"savePath": "/static/css"
+			}
+		],
+	},
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+			{
+				"name": "Python: Django",
+				"type": "python",
+				"request": "launch",
+				"program": "${workspaceFolder}\\manage.py",
+				"args": [
+					"runserver"
+				],
+				"django": true,
+				"justMyCode": true
+			}
+		]
+	}
+}

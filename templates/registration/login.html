@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+    
+
+{% block content %}
+    {% if request.user.is_authenticated %}
+    <div class="text-center my-3 form-width">
+        <h2 class="display-5 my-5">Logged in as <i class="text-primary">{{ request.user.username }}</i></h2>
+        <a href="{% url 'accounts:logout' %}" class="btn btn-warning">Logout</a>
+    </div>
+    {% else %}
+    <div class="form-width">
+            <h1 class="display-1 text-center py-5">Login</h1>
+        <form method="post" class="form-control bg-white my-5 p-5 border-altlight text-dark">
+            {% csrf_token %}
+            {{ form|crispy   }}
+            <input type="submit" value="Login" class="btn btn-primary">
+        </form>
+    </div>
+    {% endif %}
+{% endblock content %}

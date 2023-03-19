@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+
+{% block styles %}
+<style>
+    #accordionExample form .d-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2em;
+    }
+</style>
+<script src="{% static 'js/chart.min.js' %}"></script>
+
+{% endblock styles %}
+
+
+{% block content %}
+<h1 class="text-center display-1 py-5 text-uppercase">Sales</h1>
+<figure class="p-3 rounded-5 bg-white">
+    <canvas id="chart" width="900" height="200"></canvas>
+</figure>
+    <div class="accordion py-3" id="accordionExample">
+        <div class="accordion-item bg-white border-0 rounded-1">
+            <h4 class="accordion-header bg-white border-0 rounded-pill overflow-hidden" id="headingOne">
+                <button class="accordion-button bg-white" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    Filters
+                </button>
+            </h4>
+            <div id="collapseOne" class="accordion-collapse collapse bg-white rounded-1" aria-labelledby="headingOne"
+                data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <form method="get" class="w-100 ">
+                        <div class="d-grid">
+                            {{ filter.form|crispy }}
+                        </div>
+                        <input type="submit" value="Search" class="btn btn-primary">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div class="p-3 rounded-5 bg-white">
+    <table class="table table-striped bg-white rounded-4" id="items">
+        <thead class="border-0" style="border-style: none;">
+            <tr class="bg-primary text-white">
+                <th scope="col">Date</th>
+                <th scope="col">Time</th>
+                <th scope="col">Cashier</th>
+                <th scope="col">Items</th>
+                <th scope="col">Amount</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody style="border-style: none;">
+            {% for invoice in invoices %}
+            <tr class="invoice border border-white lead">
+                <td>{{ invoice.date }}</td>
+                <td>{{ invoice.time }}</td>
+                <td>@{{ invoice.handled_by.username }}</td>
+                <td>{{ invoice.items_total }}</td>
+                <td class="currency_format">{{ invoice.total_cost }}</td>
+                <td>
+                    <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#modal-{{ invoice.pk }}">
+                        <i class="fas fa-info-circle text-primary fs-4"></i>
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+{% endblock content %}
+
+
+{% block modals %}
+{% for invoice in invoices %}
+<div class="modal fade" id="modal-{{ invoice.pk }}" tabindex="-1" aria-labelledby="#Invoice-{{ invoice.pk }}"
+    style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="#Invoice-{{ invoice.pk }}">Invoice</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="list-unstyled">
+                    <li class="py-2"><span class="fw-bold me-3">Date:</span>{{ invoice.date }}</li>
+                    <li class="py-2"><span class="fw-bold me-3">Time:</span>{{ invoice.time }}</li>
+
+
+                    {% if invoice.customer %}
+                    <li class="py-2"><span class="fw-bold me-3">Card No:</span>{{ invoice.customer.card_number }}</li>
+                    <li class="py-2"><span class="fw-bold me-3">Card Holder:</span>{{ invoice.customer.name }}</li>
+                    <li class="py-2"><span class="fw-bold me-3">Discount:</span>{{ invoice.discount }}</li>
+                    {% endif %}
+
+
+                    <li class="py-2"><span class="fw-bold me-3">Amount Paid:</span><span
+                            class="currency_format">{{ invoice.total_cost }}</span></li>
+                </ul>
+                <table class="table my-3">
+                    <thead>
+                        <th>Item</th>
+                        <th>Unit Price</th>
+                        <th>Quantity</th>
+                        <th>Cost</th>
+                    </thead>
+                    <tbody>
+
+                        {% for order in invoice.all_orders %}
+                        <tr>
+                            <td>{{ order.item.name }}</td>
+                            <td class="currency_format">{{ order.selling_price }}</td>
+                            <td>{{ order.quantity }}</td>
+                            <td class="currency_format">{{ order.final_cost }}</td>
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock modals %}
+
+
+{% block scripts %}
+<script>
+    const data = JSON.parse("{{ data|escapejs }}")
+    console.log(data)
+    const ctx = document.getElementById('chart').getContext('2d');
+    const xlabels = []
+    const ysales = []
+    data.forEach(item => {
+        xlabels.push(item.date)
+        ysales.push(item.sales)
+    })
+    const myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: xlabels,
+            datasets: [{
+                label: 'Curve',
+                data: ysales,
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }]
+        }
+    });
+</script>
+{% endblock scripts %}

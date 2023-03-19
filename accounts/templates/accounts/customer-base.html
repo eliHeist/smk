@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<nav class="navbar navbar-expand text-primary" aria-label="Second navbar example">
+    <div class="container">
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'accounts:customer-list' %}">customers</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">customer groups</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    {% block content2 %}
+    {% endblock content2 %}
+</nav>
+<div class="container">
+</div>
+{% endblock content %}

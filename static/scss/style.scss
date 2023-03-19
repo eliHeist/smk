@@ -1,0 +1,48 @@
+// redefined variables first
+// $container-max-widths: (
+//    sm: 540px,
+//    md: 720px,
+//    lg: 900px,
+//    xl: 1000px,
+//    xxl: 1120px,
+// ) !default;
+.lead{
+   font-weight: 300 !important;
+}
+
+$primary: rgb(34, 44, 50);
+// $primary: rgb(60, 141, 189);
+$secondary: rgb(0, 155, 251);
+$dark: rgb(34, 44, 50);
+$light: rgb(237, 240, 246);
+// custom styles
+.form-width{
+   max-width: 500px;
+   margin: 0 auto;
+}
+
+.rounded-4{
+   border-radius: 1rem;
+   overflow:hidden;
+}
+.rounded-5{
+   border-radius: 1.5rem;
+   overflow:hidden;
+}
+
+table, thead, tbody, th{
+   border: none;
+}
+
+// import variables to add custom theme, it uses the functions file
+@import "./bootstrap-5.0.2/scss/_functions";
+@import "./bootstrap-5.0.2/scss/_variables";
+
+$custom-theme-colors: (
+   "altlight": rgb(184, 208, 210),
+   "altdark": rgb(34, 44, 50),
+);
+
+$theme-colors: map-merge($theme-colors, $custom-theme-colors);
+
+@import "./bootstrap-5.0.2/scss/bootstrap";
